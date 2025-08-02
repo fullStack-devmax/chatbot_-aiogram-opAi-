@@ -11,7 +11,6 @@ from config import TELEGRAM_BOT_TOKEN
 from database import init_db
 from handlers.cmd_handlers import cmd_router
 from handlers.msg_handlers import msg_router
-from handlers.user_handlers import user_router
 
 
 async def main():
@@ -26,7 +25,7 @@ async def main():
     ]
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
-    dp.include_routers(cmd_router, msg_router, user_router)
+    dp.include_routers(cmd_router, msg_router)
     await dp.start_polling(bot)
 
 

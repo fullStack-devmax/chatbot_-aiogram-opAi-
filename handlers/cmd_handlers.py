@@ -58,8 +58,9 @@ async def set_russian(message: Message):
 async def set_uzbek(message: Message):
     await set_language_callback(message, "uzbek")
 
-@cmd_router.callback_query()
+@cmd_router.callback_query(F.data.startswith("lang_"))
 async def set_language_callback(callback: CallbackQuery):
+    print('test LANGUAGE')
     if callback.data.startswith("lang_"):
         lang = callback.data.split("_")[1]
 
@@ -83,7 +84,6 @@ async def list_users(message: Message):
         users = result.scalars().all()
         print(f"DEBUG: Found {len(users)} users in DB")
 
-
         if not users:
             await message.answer("⚠️ No users found.")
             return
@@ -102,10 +102,15 @@ async def list_users(message: Message):
 
 @cmd_router.callback_query(F.data.startswith("view_user:"))
 async def view_user_requests(callback: CallbackQuery):
+    print(f"DEBUG: Callback received: {callback.data}")
+    await callback.answer()
+
     user_id = int(callback.data.split(":")[1])
 
     async with SessionLocal() as session:
         user = await session.get(User, user_id)
+        print(f"DEBUG: User object: {user}")
+
         if not user:
             await callback.message.answer("⚠️ User not found.")
             return
@@ -114,7 +119,7 @@ async def view_user_requests(callback: CallbackQuery):
             select(Request).where(Request.user_id == user_id).order_by(Request.created_at.desc())
         )
         requests = result.scalars().all()
-        print(f"Found {len(requests)} requests for user {user_id}")
+        print(f"DEBUG: Found {len(requests)} requests for {user.username}")
 
         if not requests:
             await callback.message.answer(f"👤 {user.firstname} ({user.username}) has no requests yet.")
