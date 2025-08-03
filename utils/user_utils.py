@@ -34,7 +34,7 @@ async def can_make_request(username: str):
             user.request_count = 0
             user.last_request_date = today
 
-        if user.request_count <= 3:
+        if user.request_count < 2:
             user.request_count += 1
             await session.commit()
             return True
