@@ -6,7 +6,7 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
-from config import TELEGRAM_BOT_TOKEN
+from config import ALLOWED_USER_IDS, TELEGRAM_BOT_TOKEN
 
 from database import init_db
 from handlers.cmd_handlers import cmd_router
@@ -18,12 +18,17 @@ async def main():
     bot = Bot(token=TELEGRAM_BOT_TOKEN)
     dp = Dispatcher()
 
-    commands = [
+    default_commands = [
         BotCommand(command="start", description="Start the bot"),
         BotCommand(command="language", description="Change your language"),
-        BotCommand(command="users", description="See all users and their requests"),
     ]
-    await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
+    await bot.set_my_commands(default_commands, scope=BotCommandScopeDefault())
+
+    for admin_id in ALLOWED_USER_IDS:
+        await bot.set_my_commands(
+            default_commands + [BotCommand(command="users", description="See all users and their requests")],
+            scope={"type": "chat", "chat_id": admin_id}
+        )
 
     dp.include_routers(cmd_router, msg_router)
     await dp.start_polling(bot)

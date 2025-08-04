@@ -4,6 +4,7 @@ from aiogram import Router, F
 
 from sqlalchemy import select
 
+from config import ALLOWED_USER_IDS
 from database import SessionLocal
 from models import User, Request
 
@@ -79,6 +80,10 @@ async def set_language_callback(callback: CallbackQuery):
 
 @cmd_router.message(Command("users"))
 async def list_users(message: Message):
+    if message.from_user.id not in ALLOWED_USER_IDS:
+        await message.answer("You are not authorized to use this command.")
+        return
+
     async with SessionLocal() as session:
         result = await session.execute(select(User))
         users = result.scalars().all()
