@@ -1,2 +1,2 @@
-<img width="500" height="700" alt="Снимок экрана 2025-08-06 115623" src="https://github.com/user-attachments/assets/8754879b-d59b-4886-985f-85b857596cce" />
-<img width="500" height="700" alt="Снимок экрана 2025-08-06 115454" src="https://github.com/user-attachments/assets/aad1439e-8468-43f1-821b-eea64be7f40a" />
+<img width="300" height="500" alt="Снимок экрана 2025-08-06 115623" src="https://github.com/user-attachments/assets/8754879b-d59b-4886-985f-85b857596cce" />
+<img width="300" height="500" alt="Снимок экрана 2025-08-06 115454" src="https://github.com/user-attachments/assets/aad1439e-8468-43f1-821b-eea64be7f40a" />
